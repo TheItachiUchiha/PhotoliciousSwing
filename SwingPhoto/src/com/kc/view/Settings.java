@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -18,12 +19,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import com.kc.service.Convert;
+import com.kc.utils.PhotoliciousUtils;
+
+
 public class Settings extends JPanel {
 
 	private JTextField fieldImageFolder;
 	private JTextField fieldOutputFolder;
 	private JTextField fieldWatermark;
-	public Settings()
+	public Settings(final MainWindow mainWindow, final ExecutorService exec)
 	{
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 0, 0, 0, 0, 0};
@@ -99,6 +104,10 @@ public class Settings extends JPanel {
 		actionPanel.add(reset);
 		convert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
+				
+				PhotoliciousUtils.saveOutputFolder(fieldOutputFolder.getText());
+      		  	final Convert convert123 = new Convert(fieldImageFolder.getText(), fieldWatermark.getText(), fieldOutputFolder.getText());
+      		  	exec.execute(convert123);
 			}
 		});
 		reset.addActionListener(new ActionListener() {
@@ -123,7 +132,7 @@ imageFolder.addActionListener(new ActionListener() {
 				        "JPG & GIF Images", "jpg", "gif");
 				    chooser.setFileFilter(filter);*/
 					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				    int returnVal = chooser.showOpenDialog(new Settings());
+				    int returnVal = chooser.showOpenDialog(mainWindow);
 				    if(returnVal == JFileChooser.APPROVE_OPTION)
 				    {
 				    	File tempFile =chooser.getSelectedFile();
@@ -142,7 +151,7 @@ outputFolder.addActionListener(new ActionListener() {
 		
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	    int returnVal = chooser.showOpenDialog(new Settings());
+	    int returnVal = chooser.showOpenDialog(mainWindow);
 	    if(returnVal == JFileChooser.APPROVE_OPTION)
 	    {
 	    	File tempFile =chooser.getSelectedFile();
@@ -160,7 +169,7 @@ watermarkImage.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
 		
 		JFileChooser chooser = new JFileChooser();
-	    int returnVal = chooser.showOpenDialog(new Settings());
+	    int returnVal = chooser.showOpenDialog(mainWindow);
 	    if(returnVal == JFileChooser.APPROVE_OPTION)
 	    {
 	    	File tempFile =chooser.getSelectedFile();
