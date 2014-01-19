@@ -78,7 +78,7 @@ public class MainWindow extends JFrame
 		final Settings settings = new Settings(this, exec);
 		tabbedPane.addTab("Settings", null, settings, null);
 		
-		final Home home = new Home();
+		final Home home = new Home(this, exec);
 		tabbedPane.addTab("Home", null, home, null);
 	}
 }
