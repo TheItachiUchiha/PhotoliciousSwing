@@ -75,10 +75,9 @@ public class MainWindow extends JFrame
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-		final Settings settings = new Settings(this, exec);
+		final Settings settings = new Settings(this, exec, tabbedPane);
 		tabbedPane.addTab("Settings", null, settings, null);
 		
-		final Home home = new Home(this, exec);
-		tabbedPane.addTab("Home", null, home, null);
+		
 	}
 }

@@ -1,13 +1,14 @@
 package com.kc.view;
-import ButtonPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ import java.util.concurrent.ExecutorService;
 
 
 
-import javafx.scene.control.Label;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,6 +50,9 @@ public class Home extends JPanel {
 	PrintImage printImage;
 	File outputFolder;
 	JLabel newFile;
+	JPanel detailsBox;
+	JPanel printOptionsBox;
+	JPanel imageBox;
 	Map<String, JLabel> filePrints = new HashMap<String, JLabel>();
 	
 	ExecutorService exec = null;
@@ -78,7 +82,7 @@ public class Home extends JPanel {
 		
 		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
 		
-		JPanel detailsBox = new JPanel();
+		detailsBox = new JPanel();
 		leftPane.add(detailsBox);
 		detailsBox.setLayout(new BoxLayout(detailsBox, BoxLayout.Y_AXIS));
 		
@@ -129,7 +133,7 @@ public class Home extends JPanel {
 		detailsBox.add(timeStamp);
 		detailsBox.add(Box.createRigidArea(new Dimension(0, 50)));
 		
-		JPanel printOptionsBox = new JPanel();
+		printOptionsBox = new JPanel();
 		leftPane.add(printOptionsBox);
 		printOptionsBox.setLayout(new BoxLayout(printOptionsBox, BoxLayout.Y_AXIS));
 		
@@ -148,7 +152,7 @@ public class Home extends JPanel {
 		Component rigidArea_6 = Box.createRigidArea(new Dimension(0, 50));
 		printOptionsBox.add(rigidArea_6);
 		
-		JPanel imageBox = new JPanel();
+		imageBox = new JPanel();
 		leftPane.add(imageBox);
 		imageBox.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -165,7 +169,7 @@ public class Home extends JPanel {
 		try{
 			SpringLayout layout = new SpringLayout();
 			tile.setLayout(layout);
-			root = new JScrollPane(tilePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			root = new JScrollPane(tile, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			
 			
@@ -220,8 +224,57 @@ public class Home extends JPanel {
 		                				list.add(file.getName());
 		                				
 		                				
-		                				
-		                				vBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		                				vBox.addMouseListener(new MouseListener() {
+											
+											@Override
+											public void mouseReleased(MouseEvent e) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void mousePressed(MouseEvent e) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void mouseExited(MouseEvent e) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void mouseEntered(MouseEvent e) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void mouseClicked(MouseEvent e) {
+											if(e.getClickCount()==1)
+											{
+												JLabel thumb = new JLabel(image);
+												imageBox.removeAll();
+												imageBox.add(thumb);
+												
+											}
+											else if(e.getClickCount()==2){
+													 JFrame frame= new JFrame();
+										        	   JPanel panel = new JPanel();
+										        	   JLabel fullImage = new JLabel(image);
+										        	   panel.add(fullImage);
+										        	   frame.add(panel);
+										        	   Toolkit tk = Toolkit.getDefaultToolkit(); 
+										        	   int xSize = ((int) tk.getScreenSize().getWidth());  
+										        	   int ySize = ((int) tk.getScreenSize().getHeight());  
+										        	   frame.setSize(xSize,ySize);  
+										        	   frame.show();
+												 }
+												
+											}
+										});
+		                				/*vBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		                						
 											@Override
 											public void handle(MouseEvent mouseEvent) {
@@ -235,7 +288,7 @@ public class Home extends JPanel {
 														ImageView imageView = new ImageView();
 										            	imageView.setImage(image);
 										            	
-														/*imageView.setFitHeight(imageViewBox.getMaxHeight() - 10);*/
+														imageView.setFitHeight(imageViewBox.getMaxHeight() - 10);
 														imageView.setFitWidth(imageViewBox.getMaxWidth() - 10);
 														imageView.setPreserveRatio(true);
 														imageView.setSmooth(true);
@@ -277,7 +330,7 @@ public class Home extends JPanel {
 										           
 												}
 											}
-										});
+										});*/
 		                				
 		                				
 		                				
@@ -309,11 +362,12 @@ public class Home extends JPanel {
 			e.printStackTrace();
 		}
         
-		root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);    // Horizontal scroll bar
+		/*root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);    // Horizontal scroll bar
 		root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);    // Vertical scroll bar
 		//	root.setFitToHeight(true);
 		root.setFitToWidth(true);
-        root.setContent(tile);	
+        root.setContent(tile);	*/
+		
 		
         return root;
 	}

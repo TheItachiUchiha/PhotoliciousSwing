@@ -18,7 +18,7 @@ public class PhotoBox extends JPanel {
 		photoIcon.setIcon(icon);
 		photoName.setText((file.getName().length()) > 20 ? file.getName().substring(0,10)+".." : file.getName());
 		this.print.setText(print.getText());
-		setLayout(new BoxLayout(new PhotoBox(icon,file,print) , BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this , BoxLayout.Y_AXIS));
 		
 	}
 	
