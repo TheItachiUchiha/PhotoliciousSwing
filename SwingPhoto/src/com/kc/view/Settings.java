@@ -1,8 +1,5 @@
 package com.kc.view;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,14 +8,11 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import com.kc.service.Convert;
 import com.kc.utils.PhotoliciousUtils;
@@ -28,6 +22,7 @@ public class Settings extends JPanel {
 	private JTextField fieldImageFolder;
 	private JTextField fieldOutputFolder;
 	private JTextField fieldWatermark;
+	static Home home;
 
 	public Settings(final MainWindow mainWindow, final ExecutorService exec,
 			final JTabbedPane jTabbedPane) {
@@ -117,7 +112,7 @@ public class Settings extends JPanel {
 				exec.execute(convert123);
 				
 				jTabbedPane.remove(0);
-				final Home home = new Home(mainWindow, exec);
+				home = new Home(mainWindow, exec);
 				jTabbedPane.addTab("Home", null, home, null);
 			}
 		});

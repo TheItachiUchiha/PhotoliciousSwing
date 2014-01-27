@@ -1,13 +1,12 @@
 package com.kc.view;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -25,10 +24,12 @@ import java.util.concurrent.ExecutorService;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -59,6 +60,8 @@ public class Home extends JPanel {
 	JPanel detailsBox;
 	JPanel printOptionsBox;
 	JPanel imageBox;
+	JButton printButton;
+	JButton slideshowButton;
 	Map<String, JLabel> filePrints = new HashMap<String, JLabel>();
 	
 	ExecutorService exec = null;
@@ -148,7 +151,7 @@ public class Home extends JPanel {
 		Component rigidArea_p = Box.createRigidArea(new Dimension(30, 0));
 		detailsBox.add(rigidArea_p);
 		
-		JButton printButton = new JButton("Print Selected");
+		printButton = new JButton("Print Selected");
 		printButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		printOptionsBox.add(printButton);
 		
@@ -156,7 +159,7 @@ public class Home extends JPanel {
 		Component rigidArea_5 = Box.createRigidArea(new Dimension(0, 30));
 		printOptionsBox.add(rigidArea_5);
 		
-		JButton slideshowButton = new JButton("Begin Slideshow");
+		slideshowButton = new JButton("Begin Slideshow");
 		slideshowButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		printOptionsBox.add(slideshowButton);
 		
@@ -210,23 +213,49 @@ public class Home extends JPanel {
 				frame.setVisible(true);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 				frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+				frame.show();
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		printButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if(imageBox.getComponents().length!=0)
+				{
+					PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription());
+					exec.submit(image);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(Settings.home, "Please Select Nn Image!");
+					/*
+					*//**
+					 * Remove when the above code is uncommented
+					 *//*
+					final JFrame newFrame = new JFrame();
+					JPanel newPanel = new JPanel();
+					Toolkit tk = Toolkit.getDefaultToolkit(); 
+		        	int xSize = ((int) tk.getScreenSize().getWidth());  
+		        	int ySize = ((int) tk.getScreenSize().getHeight());  
+		        	newFrame.setSize(xSize,ySize);
+		        	newFrame.setTitle("Print");
+		        	newPanel.setLayout(new BoxLayout(newPanel,BoxLayout.Y_AXIS));
+		        	newFrame.add(newPanel);
+		        	newFrame.show();
+		        	JButton button = new JButton("OK");
+		        	button.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent paramActionEvent) {
+
+							newFrame.dispose();
+						}
+					});
+		        	newPanel.add(new JLabel("Please Select An Image !"));
+					*/}
+			}
+		});
 		
 		Component rigidArea_6 = Box.createRigidArea(new Dimension(0, 50));
 		printOptionsBox.add(rigidArea_6);
@@ -336,7 +365,7 @@ public class Home extends JPanel {
 											{
 												try
 												{
-													number.setText("jhfjj");
+													//number.setText("jhfjj");
 													JLabel thumb = new JLabel(helper.imagePreview(file));
 													imageBox.removeAll();
 													imageBox.add(thumb);
