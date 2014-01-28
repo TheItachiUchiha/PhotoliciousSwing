@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -25,6 +26,8 @@ import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.print.attribute.standard.OrientationRequested;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
@@ -176,6 +179,8 @@ public class PrintImage extends SwingWorker<Integer, String> {
 	        try{
 	    	PrinterJob job = PrinterJob.getPrinterJob();
 	    	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+	    	aset.add(OrientationRequested.REVERSE_LANDSCAPE);
+	    	aset.add(MediaSizeName.JAPANESE_POSTCARD);
 	        //PageFormat pf = job.pageDialog(aset);
 	        //job.setPrintable(new PrintDialogExample(), pf);
 	    	job.setJobName("TEST JOB");

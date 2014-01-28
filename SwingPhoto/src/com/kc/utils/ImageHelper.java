@@ -56,7 +56,7 @@ public class ImageHelper
     {  
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final int WIDTH  = (int)screenSize.getWidth();
-        final int HEIGHT = (int)screenSize.getHeight()-80;
+        final int HEIGHT = (int)screenSize.getHeight();
         BufferedImage images;
         AffineTransform at;  
         
@@ -94,7 +94,7 @@ public class ImageHelper
         
         images = new BufferedImage(WIDTH, HEIGHT,  
                                       BufferedImage.TYPE_INT_RGB);  
-        Graphics2D g2 = images.createGraphics();  
+        Graphics2D g2 = images.createGraphics();
         g2.setPaint(bgColor);  
         g2.fillRect(0, 0, WIDTH, HEIGHT);  
         // scale to fit  
@@ -108,7 +108,8 @@ public class ImageHelper
         at.scale(scale, scale);  
         g2.drawRenderedImage(origs, at);  
         g2.dispose();  
-       
-        return new ImageIcon(images);
+        ImageIcon imageIcon = new ImageIcon(images);
+        imageIcon.setDescription(file.getPath());
+        return imageIcon;
     }
 }

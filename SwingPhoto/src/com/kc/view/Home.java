@@ -196,8 +196,7 @@ public class Home extends JPanel {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						Slideshow slideshow = new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem());
-						exec.execute(slideshow);
+						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(),exec);
 						frame.dispose();
 					}
 				});
@@ -216,6 +215,7 @@ public class Home extends JPanel {
 				frame.show();
 			}
 		});
+		
 		printButton.addActionListener(new ActionListener() {
 			
 			@Override

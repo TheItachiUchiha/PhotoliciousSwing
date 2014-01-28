@@ -3,41 +3,60 @@ package com.kc.service;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import com.kc.model.ScreenVO;
 import com.kc.utils.ImageHelper;
 import com.kc.utils.PhotoliciousUtils;
 
-public class Slideshow extends SwingWorker<Integer, Integer> {
+public class Slideshow
+{
 
 	File outputFolder;
 	ScreenVO screenVO;
 	ImageHelper helper;
+	List<String> listOfImagesParsed;
+	JFrame frame;
+	JPanel panel;
+	ExecutorService executorService;
+	JLabel label;
 
-	public Slideshow(File outputFolder, ScreenVO screenVO) {
+	public Slideshow(File outputFolder, ScreenVO screenVO, ExecutorService executorService) {
 		this.outputFolder = outputFolder;
 		this.screenVO = screenVO;
 		this.helper = new ImageHelper();
+		this.listOfImagesParsed = new ArrayList<String>();
+		this.executorService = executorService;
+		start(outputFolder, screenVO, executorService);
 	}
 
-	public void start(final File outputFolder, ScreenVO screenVO) {
+	
+		
+		
+	public void start(final File outputFolder, ScreenVO screenVO, ExecutorService executorService) {
 		try {
 
-			final JFrame frame = new JFrame();
-			final JPanel panel = new JPanel();
-
+			this.frame = new JFrame();
+			this.panel = new JPanel();
 			frame.add(panel);
-			frame.setVisible(true);
 			frame.setSize(new Dimension(200, 200));
+			frame.setUndecorated(true);
 			frame.addKeyListener(new KeyListener() {
 				
 				@Override
@@ -56,47 +75,44 @@ public class Slideshow extends SwingWorker<Integer, Integer> {
 				public void keyPressed(java.awt.event.KeyEvent e) {
 					if (e.getKeyCode() == e.VK_ESCAPE) {
 		                frame.dispose();
+		                Thread.interrupted();
 		            }
 					
 				}
 			});
 			
+			label = new JLabel();
+			panel.add(label);
+			screenVO.getScreen().setFullScreenWindow(frame);
+			frame.setVisible(true);
+			Timer timer = new Timer(5000, startCycle());
+	        timer.setRepeats(true);
+	        timer.start();
+			
 			//screenVO.getScreen().setFullScreenWindow(frame);
 
 			/* frame.setExtendedState(JFrame.MAXIMIZED_BOTH); */
 		
-					File[] listOfFile = PhotoliciousUtils
-							.filterJPEGImagesFromFolder(outputFolder
-									.listFiles());
-					List list = PhotoliciousUtils.nameOfFiles(listOfFile);
-					while (!Thread.interrupted()) {
-						File[] listOfFiles = PhotoliciousUtils
-								.filterJPEGImagesFromFolder(outputFolder
-										.listFiles());
-
-						if (list.size() > listOfFiles.length) {
-							list.clear();
-							list = PhotoliciousUtils.nameOfFiles(listOfFiles);
-						} else {
-							for (final File file : listOfFiles) {
-								try {
-									panel.removeAll();
-									JLabel fullImage = new JLabel(helper
-											.createThumbnails(file));
-									panel.add(fullImage);
-									Thread.sleep(5000);
-									
-								} catch (Exception ex) {
-									ex.printStackTrace();
-								}
-							}
-						}
-					}
+					
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private Action startCycle() {
+        return new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//Need to close this thread when ESC is pressed
+            	executorService.execute(new MyTask());
+            }
+        };
+    }
+
+	
+	
 
 	public static ScreenVO[] fetchListOfScreen() {
 		ScreenVO[] listOfScreenVO = new ScreenVO[10];
@@ -125,14 +141,58 @@ public class Slideshow extends SwingWorker<Integer, Integer> {
 		return listOfScreenVO;
 	}
 
-	@Override
-	protected Integer doInBackground() throws Exception {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				start(outputFolder, screenVO);
+	
+	public class MyTask extends SwingWorker<ImageIcon, Object>
+	{
+			@Override
+			protected ImageIcon doInBackground() throws Exception {
+				return loadImages();
+				
 			}
-		});
-		return null;
+			
+			@Override
+			protected void done()
+			{
+				try
+				{
+					label.setIcon(get());
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
+			public ImageIcon loadImages()
+			{
+				ImageIcon icon = new ImageIcon();
+				File[] listOfFiles = PhotoliciousUtils
+						.filterJPEGImagesFromFolder(outputFolder
+								.listFiles());
+				
+				for (final File file : listOfFiles) {
+					try {
+						if(listOfImagesParsed.size()==listOfFiles.length)
+						{
+							listOfImagesParsed.clear();
+						}
+						if(!listOfImagesParsed.contains(file.getName()))
+						{
+							icon= helper.createFullScreenImage(file);
+							listOfImagesParsed.add(file.getName());
+							break;
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+				return icon;
+			}
 	}
 
+
 }
+
+
+	
