@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.kc.utils.CommonConstants;
 import com.kc.utils.PhotoliciousUtils;
+import com.kc.utils.SplashScreen;
 
 public class MainWindow extends JFrame
 {
@@ -33,6 +34,9 @@ public class MainWindow extends JFrame
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		SplashScreen splash = new SplashScreen(2000);
+		splash.showSplash();
 		String appId = "Photolicious-App";
     	PhotoliciousUtils.saveOutputFolder(CommonConstants.defalutOutPutFolder);
     	boolean running;
@@ -54,6 +58,7 @@ public class MainWindow extends JFrame
     					frame.setExtendedState(frame.getExtendedState()|JFrame.MAXIMIZED_BOTH);
     					frame.setVisible(true);
     					frame.setResizable(false);
+    					
     				} catch (Exception e) {
     					e.printStackTrace();
     				}

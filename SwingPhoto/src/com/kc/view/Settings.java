@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import com.kc.service.Convert;
 import com.kc.utils.PhotoliciousUtils;
+import javax.swing.JLabel;
 
 public class Settings extends JPanel {
 
@@ -36,6 +37,13 @@ public class Settings extends JPanel {
 		gbl_panel.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gbl_panel);
+		
+		JLabel lblSelectInputDirectory = new JLabel("Select Input Directory");
+		GridBagConstraints gbc_lblSelectInputDirectory = new GridBagConstraints();
+		gbc_lblSelectInputDirectory.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelectInputDirectory.gridx = 8;
+		gbc_lblSelectInputDirectory.gridy = 3;
+		add(lblSelectInputDirectory, gbc_lblSelectInputDirectory);
 
 		fieldImageFolder = new JTextField();
 		GridBagConstraints gbc_fieldImageFolder = new GridBagConstraints();
@@ -53,6 +61,13 @@ public class Settings extends JPanel {
 		gbc_imageFolder.gridx = 12;
 		gbc_imageFolder.gridy = 3;
 		add(imageFolder, gbc_imageFolder);
+		
+		JLabel lblSelectOutputDirectory = new JLabel("Select Output Directory");
+		GridBagConstraints gbc_lblSelectOutputDirectory = new GridBagConstraints();
+		gbc_lblSelectOutputDirectory.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelectOutputDirectory.gridx = 8;
+		gbc_lblSelectOutputDirectory.gridy = 4;
+		add(lblSelectOutputDirectory, gbc_lblSelectOutputDirectory);
 
 		fieldOutputFolder = new JTextField();
 		fieldOutputFolder.setColumns(10);
@@ -70,6 +85,13 @@ public class Settings extends JPanel {
 		gbc_outputFolder.gridx = 12;
 		gbc_outputFolder.gridy = 4;
 		add(outputFolder, gbc_outputFolder);
+		
+		JLabel lblSelectWatermark = new JLabel("Select Watermark");
+		GridBagConstraints gbc_lblSelectWatermark = new GridBagConstraints();
+		gbc_lblSelectWatermark.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelectWatermark.gridx = 8;
+		gbc_lblSelectWatermark.gridy = 5;
+		add(lblSelectWatermark, gbc_lblSelectWatermark);
 
 		fieldWatermark = new JTextField();
 		fieldWatermark.setColumns(10);
