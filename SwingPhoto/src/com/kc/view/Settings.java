@@ -11,23 +11,28 @@ import java.util.concurrent.ExecutorService;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.kc.service.Convert;
+import com.kc.utils.CommonConstants;
 import com.kc.utils.PhotoliciousUtils;
+import com.kc.utils.Validation;
 
 public class Settings extends JPanel {
 
 	private JTextField fieldImageFolder;
 	private JTextField fieldOutputFolder;
 	private JTextField fieldWatermark;
+	private Validation validation;
 	static Home home;
 
 	public Settings(final MainWindow mainWindow, final ExecutorService exec,
 			final JTabbedPane jTabbedPane) {
+		validation = new Validation();
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				46, 0, 0, 0, 0, 0, 0, 0 };
@@ -47,6 +52,7 @@ public class Settings extends JPanel {
 		add(lblSelectInputDirectory, gbc_lblSelectInputDirectory);
 
 		fieldImageFolder = new JTextField();
+		fieldImageFolder.setEditable(false);
 		GridBagConstraints gbc_fieldImageFolder = new GridBagConstraints();
 		gbc_fieldImageFolder.gridwidth = 2;
 		gbc_fieldImageFolder.insets = new Insets(0, 0, 5, 5);
@@ -71,6 +77,7 @@ public class Settings extends JPanel {
 		add(lblSelectOutputDirectory, gbc_lblSelectOutputDirectory);
 
 		fieldOutputFolder = new JTextField();
+		fieldOutputFolder.setEditable(false);
 		fieldOutputFolder.setColumns(10);
 		GridBagConstraints gbc_fieldOutputFolder = new GridBagConstraints();
 		gbc_fieldOutputFolder.gridwidth = 2;
@@ -95,6 +102,7 @@ public class Settings extends JPanel {
 		add(lblSelectWatermark, gbc_lblSelectWatermark);
 
 		fieldWatermark = new JTextField();
+		fieldWatermark.setEditable(false);
 		fieldWatermark.setColumns(10);
 		GridBagConstraints gbc_fieldWatermark = new GridBagConstraints();
 		gbc_fieldWatermark.gridwidth = 2;
@@ -111,7 +119,7 @@ public class Settings extends JPanel {
 		gbc_watermarkImage.gridy = 5;
 		add(watermarkImage, gbc_watermarkImage);
 
-		JPanel actionPanel = new JPanel();
+		final JPanel actionPanel = new JPanel();
 		GridBagConstraints gbc_actionPanel = new GridBagConstraints();
 		gbc_actionPanel.gridheight = 2;
 		gbc_actionPanel.insets = new Insets(0, 0, 5, 5);
@@ -127,16 +135,31 @@ public class Settings extends JPanel {
 		actionPanel.add(reset);
 		convert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-
-				PhotoliciousUtils.saveOutputFolder(fieldOutputFolder.getText());
-				final Convert convert123 = new Convert(fieldImageFolder
-						.getText(), fieldWatermark.getText(), fieldOutputFolder
-						.getText());
-				exec.execute(convert123);
 				
-				jTabbedPane.remove(0);
-				home = new Home(mainWindow, exec);
-				jTabbedPane.addTab("Home", null, home, null);
+				if(validation.isEmpty(fieldImageFolder))
+				{
+					JOptionPane.showMessageDialog(actionPanel, CommonConstants.NO_INPUT_FOLDER);
+				}
+				else if(validation.isEmpty(fieldOutputFolder))
+				{
+					JOptionPane.showMessageDialog(actionPanel, CommonConstants.NO_OUTPUT_FOLDER);
+				}
+				else if(validation.isEmpty(fieldWatermark))
+				{
+					JOptionPane.showMessageDialog(actionPanel, CommonConstants.NO_WATERMARK);
+				}
+				else
+				{
+					PhotoliciousUtils.saveOutputFolder(fieldOutputFolder.getText());
+					final Convert convert123 = new Convert(fieldImageFolder
+							.getText(), fieldWatermark.getText(), fieldOutputFolder
+							.getText());
+					exec.execute(convert123);
+					
+					jTabbedPane.remove(0);
+					home = new Home(mainWindow, exec);
+					jTabbedPane.addTab("Home", null, home, null);
+				}
 			}
 		});
 		reset.addActionListener(new ActionListener() {
