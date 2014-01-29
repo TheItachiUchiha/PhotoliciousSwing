@@ -153,7 +153,7 @@ public class Home extends JPanel {
 		
 		currentImage = new JLabel("");
 		detailsBox.add(currentImage);
-		detailsBox.add(Box.createRigidArea(new Dimension(0, 50)));
+		detailsBox.add(Box.createRigidArea(new Dimension(0, 20)));
 		
 		printOptionsBox = new JPanel();
 		leftPane.add(printOptionsBox);
