@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
@@ -41,7 +42,7 @@ public class SplashScreen extends JWindow {
     setBounds(x,y,width,height);
 
     // Build the splash screen
-    JLabel label = new JLabel(new ImageIcon("E:\\splash.jpg"));
+    JLabel label = new JLabel(new ImageIcon(this.getClass().getResource("/com/kc/styles/splash.jpg")));
     bar = new JProgressBar(0,100);
     //bar.setValue(75);
     JLabel copyrt = new JLabel
