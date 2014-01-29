@@ -231,9 +231,6 @@ public class Home extends JPanel {
 			}
 		});
 		
-		Component rigidArea_6 = Box.createRigidArea(new Dimension(0, 50));
-		printOptionsBox.add(rigidArea_6);
-		
 		imageBox = new JPanel();
 		imageBox.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		imageBox.setAlignmentX(Component.LEFT_ALIGNMENT);
