@@ -26,7 +26,7 @@ public class ImageHelper
 	public ImageIcon createThumbnails(File file) throws IOException  
     {  
         final int WIDTH  = 200;  
-        final int HEIGHT = 350;  
+        final int HEIGHT = 150;  
         BufferedImage images;
         AffineTransform at;  
         

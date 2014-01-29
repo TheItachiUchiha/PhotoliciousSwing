@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -47,7 +48,8 @@ public class PhotoBox extends JPanel {
 	
 		setLayout(new BoxLayout(this , BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), getBorder()));
-		//setMaximumSize(new Dimension(200,150));
+		setMaximumSize(new Dimension(200,150));
+		setBackground(Color.blue);
 		
 		add(this.photoIcon);
 		add(this.photoName);
