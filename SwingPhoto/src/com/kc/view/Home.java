@@ -61,6 +61,7 @@ public class Home extends JPanel {
 	JButton printButton;
 	JButton slideshowButton;
 	JLabel lblNoOfPrints;
+	JLabel currentImage;
 	Map<String, JLabel> filePrints = new HashMap<String, JLabel>();
 	
 	ExecutorService exec = null;
@@ -139,7 +140,20 @@ public class Home extends JPanel {
 		
 		timeStamp = new JLabel("");
 		detailsBox.add(timeStamp);
-		detailsBox.add(Box.createRigidArea(new Dimension(0, 80)));
+		
+		Component rigidArea_6 = Box.createRigidArea(new Dimension(0, 20));
+		detailsBox.add(rigidArea_6);
+		
+		JLabel lblCurrentlySelectedFile = new JLabel("Currently Selected File");
+		lblCurrentlySelectedFile.setFont(new Font("Tahoma", Font.BOLD, 11));
+		detailsBox.add(lblCurrentlySelectedFile);
+		
+		Component rigidArea_7 = Box.createRigidArea(new Dimension(0, 10));
+		detailsBox.add(rigidArea_7);
+		
+		currentImage = new JLabel("");
+		detailsBox.add(currentImage);
+		detailsBox.add(Box.createRigidArea(new Dimension(0, 50)));
 		
 		printOptionsBox = new JPanel();
 		leftPane.add(printOptionsBox);
@@ -336,7 +350,7 @@ public class Home extends JPanel {
 											{
 												try
 												{
-													newFile.setText(file.getName());
+													currentImage.setText(file.getName());
 													JLabel thumb = new JLabel(helper.imagePreview(file));
 													imageBox.removeAll();
 													imageBox.add(thumb);
