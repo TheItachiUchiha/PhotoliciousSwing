@@ -10,13 +10,14 @@ import java.util.concurrent.ExecutorService;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.kc.service.Convert;
 import com.kc.utils.PhotoliciousUtils;
-import javax.swing.JLabel;
 
 public class Settings extends JPanel {
 
@@ -156,11 +157,6 @@ public class Settings extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				JFileChooser chooser = new JFileChooser();
-				/*
-				 * FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				 * "JPG & GIF Images", "jpg", "gif");
-				 * chooser.setFileFilter(filter);
-				 */
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = chooser.showOpenDialog(mainWindow);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -195,6 +191,8 @@ public class Settings extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG","png");
+				chooser.setFileFilter(filter);
 				int returnVal = chooser.showOpenDialog(mainWindow);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File tempFile = chooser.getSelectedFile();

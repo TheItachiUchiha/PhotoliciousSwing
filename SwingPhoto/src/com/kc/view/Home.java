@@ -2,7 +2,6 @@ package com.kc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -48,7 +47,7 @@ import com.kc.utils.WrapLayout;
 
 public class Home extends JPanel {
 
-	JLabel newFileName;
+	JLabel newFile;
 	JLabel timeStamp;
 	JLabel noOfPrint;
 	JLabel number;
@@ -56,12 +55,12 @@ public class Home extends JPanel {
 	PrintImage printImage;
 	File outputFolder;
 	ImageHelper helper;
-	JLabel newFile;
 	JPanel detailsBox;
 	JPanel printOptionsBox;
 	JPanel imageBox;
 	JButton printButton;
 	JButton slideshowButton;
+	JLabel lblNoOfPrints;
 	Map<String, JLabel> filePrints = new HashMap<String, JLabel>();
 	
 	ExecutorService exec = null;
@@ -73,7 +72,6 @@ public class Home extends JPanel {
 		this.exec = exec;
 		number = new JLabel("0");
 		outputFolder = new File(PhotoliciousUtils.readOutputFolder());
-		newFile = new JLabel();
 		this.helper = new ImageHelper();
 		
 		JSplitPane splitPane = new JSplitPane();
@@ -89,7 +87,7 @@ public class Home extends JPanel {
 		JPanel leftPane = new JPanel();
 		
 		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
-		leftPane.setPreferredSize(new Dimension(150, 0));
+		leftPane.setPreferredSize(new Dimension(160, 0));
 		
 		detailsBox = new JPanel();
 		leftPane.add(detailsBox);
@@ -99,7 +97,7 @@ public class Home extends JPanel {
 		Component rigidArea = Box.createRigidArea(new Dimension(0, 30));
 		detailsBox.add(rigidArea);
 		
-		JLabel lblNewLabel = new JLabel("No. of Photos in Output Folder");
+		JLabel lblNewLabel = new JLabel("No. of Photos in Output Folder             ");
 		detailsBox.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
@@ -110,7 +108,7 @@ public class Home extends JPanel {
 		detailsBox.add(number);
 		detailsBox.add(Box.createRigidArea(new Dimension(0, 20)));
 		
-		JLabel lblNoOfPrints = new JLabel("No. Of Prints (Current Session)");
+		lblNoOfPrints = new JLabel("No. Of Prints (Current Session)");
 		lblNoOfPrints.setFont(new Font("Tahoma", Font.BOLD, 11));
 		detailsBox.add(lblNoOfPrints);
 		
@@ -128,8 +126,8 @@ public class Home extends JPanel {
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(0, 10));
 		detailsBox.add(rigidArea_3);
 		
-		newFileName = new JLabel("name");
-		detailsBox.add(newFileName);
+		newFile = new JLabel("");
+		detailsBox.add(newFile);
 		detailsBox.add(Box.createRigidArea(new Dimension(0, 20)));
 		
 		JLabel lblNewLabel_1 = new JLabel("Photo Timestamp");
@@ -139,9 +137,9 @@ public class Home extends JPanel {
 		Component rigidArea_4 = Box.createRigidArea(new Dimension(0, 10));
 		detailsBox.add(rigidArea_4);
 		
-		timeStamp = new JLabel("stamp");
+		timeStamp = new JLabel("");
 		detailsBox.add(timeStamp);
-		detailsBox.add(Box.createRigidArea(new Dimension(0, 50)));
+		detailsBox.add(Box.createRigidArea(new Dimension(0, 80)));
 		
 		printOptionsBox = new JPanel();
 		leftPane.add(printOptionsBox);
@@ -205,7 +203,7 @@ public class Home extends JPanel {
 				panel.add(upperPane, BorderLayout.PAGE_START);
 				panel.add(lowerPane, BorderLayout.CENTER);
 				
-				frame.add(panel);
+				frame.getContentPane().add(panel);
 				frame.setSize(320, 100);
 				frame.setResizable(false);
 				frame.setAlwaysOnTop(true);
@@ -228,32 +226,8 @@ public class Home extends JPanel {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(Settings.home, "Please Select Nn Image!");
-					/*
-					*//**
-					 * Remove when the above code is uncommented
-					 *//*
-					final JFrame newFrame = new JFrame();
-					JPanel newPanel = new JPanel();
-					Toolkit tk = Toolkit.getDefaultToolkit(); 
-		        	int xSize = ((int) tk.getScreenSize().getWidth());  
-		        	int ySize = ((int) tk.getScreenSize().getHeight());  
-		        	newFrame.setSize(xSize,ySize);
-		        	newFrame.setTitle("Print");
-		        	newPanel.setLayout(new BoxLayout(newPanel,BoxLayout.Y_AXIS));
-		        	newFrame.add(newPanel);
-		        	newFrame.show();
-		        	JButton button = new JButton("OK");
-		        	button.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent paramActionEvent) {
-
-							newFrame.dispose();
-						}
-					});
-		        	newPanel.add(new JLabel("Please Select An Image !"));
-					*/}
+					JOptionPane.showMessageDialog(Settings.home, "Please Select An Image !");
+				}
 			}
 		});
 		
@@ -365,7 +339,7 @@ public class Home extends JPanel {
 											{
 												try
 												{
-													//number.setText("jhfjj");
+													newFile.setText(file.getName());
 													JLabel thumb = new JLabel(helper.imagePreview(file));
 													imageBox.removeAll();
 													imageBox.add(thumb);
@@ -381,7 +355,7 @@ public class Home extends JPanel {
 										        	   JPanel panel = new JPanel();
 										        	   JLabel fullImage = new JLabel(helper.createFullScreenImage(file));
 										        	   panel.add(fullImage);
-										        	   frame.add(panel);
+										        	   frame.getContentPane().add(panel);
 										        	   frame.setVisible(true);
 										        	   frame.show();
 										        	   frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

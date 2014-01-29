@@ -47,7 +47,7 @@ public class PhotoBox extends JPanel {
 	
 		setLayout(new BoxLayout(this , BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), getBorder()));
-		//setPreferredSize(new Dimension(200,150));
+		//setMaximumSize(new Dimension(200,150));
 		
 		add(this.photoIcon);
 		add(this.photoName);
