@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -255,7 +256,7 @@ public class Home extends JPanel {
 		leftPane.add(rigidArea_8);
 		
 		imageBox = new JPanel();
-		//imageBox.setBackground(Color.BLUE);
+		//imageBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), getBorder()));
 		imageBox.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		imageBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 		leftPane.add(imageBox);
@@ -263,7 +264,10 @@ public class Home extends JPanel {
 		return leftPane;
 		
 	}
-		
+	public void removeBorder(JPanel panel)
+	{
+		panel.setBorder(BorderFactory.createEmptyBorder());
+	}
 	
 	public JScrollPane viewGallery(final MainWindow stage)
 	{
@@ -360,6 +364,11 @@ public class Home extends JPanel {
 											{
 												try
 												{
+													for(int i=0;i<tile.getComponents().length;i++)
+													{
+														removeBorder((JPanel)(tile.getComponent(i)));
+													}
+													vBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), getBorder()));
 													currentImage.setText(file.getName());
 													JLabel thumb = new JLabel(helper.imagePreview(file));
 													imageBox.removeAll();
