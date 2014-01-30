@@ -1,6 +1,7 @@
 package com.kc.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -153,7 +154,9 @@ public class Home extends JPanel {
 		
 		currentImage = new JLabel("");
 		detailsBox.add(currentImage);
-		detailsBox.add(Box.createRigidArea(new Dimension(0, 20)));
+		
+		Component rigidArea_9 = Box.createRigidArea(new Dimension(0, 60));
+		leftPane.add(rigidArea_9);
 		
 		printOptionsBox = new JPanel();
 		leftPane.add(printOptionsBox);
@@ -162,6 +165,9 @@ public class Home extends JPanel {
 		
 		Component rigidArea_p = Box.createRigidArea(new Dimension(30, 0));
 		detailsBox.add(rigidArea_p);
+		
+		Component rigidArea_10 = Box.createRigidArea(new Dimension(220, 0));
+		printOptionsBox.add(rigidArea_10);
 		
 		printButton = new JButton("Print Selected");
 		printButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -245,7 +251,11 @@ public class Home extends JPanel {
 			}
 		});
 		
+		Component rigidArea_8 = Box.createRigidArea(new Dimension(0, 50));
+		leftPane.add(rigidArea_8);
+		
 		imageBox = new JPanel();
+		//imageBox.setBackground(Color.BLUE);
 		imageBox.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		imageBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 		leftPane.add(imageBox);

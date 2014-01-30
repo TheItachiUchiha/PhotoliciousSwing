@@ -86,7 +86,7 @@ public class ImageHelper
     {  
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final int WIDTH  = 200;
-        final int HEIGHT = 350;
+        final int HEIGHT = 150;
         BufferedImage images;
         AffineTransform at;  
         
