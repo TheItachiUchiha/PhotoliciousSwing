@@ -34,8 +34,7 @@ public class Settings extends JPanel {
 			final JTabbedPane jTabbedPane) {
 		validation = new Validation();
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				46, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panel.columnWidths = new int[] {30, 30, 30, 30, 30, 30, 30, 30, 0, 30, 30, 46, 0, 30, 30, 30, 30, 30, 230};
 		gbl_panel.rowHeights = new int[] { -3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panel.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
