@@ -38,7 +38,7 @@ public class MainWindow extends JFrame
 		SplashScreen splash = new SplashScreen(2000);
 		splash.showSplash();
 		String appId = "Photolicious-App";
-    	PhotoliciousUtils.saveOutputFolder(CommonConstants.defalutOutPutFolder);
+    	PhotoliciousUtils.saveOutputFolder(CommonConstants.DEFAULT_OUTPUT_FOLDER);
     	boolean running;
     	try {
 			JUnique.acquireLock(appId);
