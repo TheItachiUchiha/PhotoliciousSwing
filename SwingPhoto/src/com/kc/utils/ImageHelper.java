@@ -15,6 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import com.kc.model.ScreenVO;
+
 public class ImageHelper 
 {
 	Color bgColor;
@@ -57,6 +59,35 @@ public class ImageHelper
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final int WIDTH  = (int)screenSize.getWidth();
         final int HEIGHT = (int)screenSize.getHeight();
+        BufferedImage images;
+        AffineTransform at;  
+        
+        BufferedImage origs = ImageIO.read(file);  
+        
+        images = new BufferedImage(WIDTH, HEIGHT,  
+                                      BufferedImage.TYPE_INT_RGB);  
+        Graphics2D g2 = images.createGraphics();  
+        g2.setPaint(bgColor);  
+        g2.fillRect(0, 0, WIDTH, HEIGHT);  
+        // scale to fit  
+        double xScale = (double)WIDTH  / origs.getWidth();  
+        double yScale = (double)HEIGHT / origs.getHeight();  
+        double scale = Math.min(xScale, yScale);  
+        // center thumbnail image  
+        double x = (WIDTH  - origs.getWidth()  * scale)/2;  
+        double y = (HEIGHT - origs.getHeight() * scale)/2;  
+        at = AffineTransform.getTranslateInstance(x, y);  
+        at.scale(scale, scale);  
+        g2.drawRenderedImage(origs, at);  
+        g2.dispose();  
+       
+        return new ImageIcon(images);
+    }
+	
+	public ImageIcon createFullScreenImage(File file, ScreenVO screenVO) throws IOException  
+    {  
+        final int WIDTH  = screenVO.getScreen().getDisplayMode().getWidth();
+        final int HEIGHT = screenVO.getScreen().getDisplayMode().getHeight();
         BufferedImage images;
         AffineTransform at;  
         

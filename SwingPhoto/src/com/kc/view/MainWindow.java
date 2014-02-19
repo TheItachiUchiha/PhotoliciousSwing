@@ -57,7 +57,7 @@ public class MainWindow extends JFrame
     					MainWindow frame = new MainWindow();
     					frame.setExtendedState(frame.getExtendedState()|JFrame.MAXIMIZED_BOTH);
     					frame.setVisible(true);
-    					frame.setResizable(false);
+    					frame.setResizable(true);
     					
     				} catch (Exception e) {
     					e.printStackTrace();

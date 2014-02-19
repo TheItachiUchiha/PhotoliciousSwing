@@ -187,14 +187,26 @@ public class Home extends JPanel {
 				
 				
 				JPanel upperPane = new JPanel();
+				JPanel centerPane = new JPanel();
 				JPanel lowerPane = new JPanel();
 				FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
 				upperPane.setLayout(flowLayout);
 				lowerPane.setLayout(flowLayout);
+				centerPane.setLayout(flowLayout);
 				
 				JLabel selectScreen = new JLabel("Screen");
-				
 				upperPane.add(selectScreen);
+				
+				JLabel selectTime = new JLabel("Time (in sec)");
+				centerPane.add(selectTime);
+				
+				Integer[] timeList = new Integer[2];
+				timeList[0] = 3;
+				timeList[1] = 5;
+				final JComboBox<Integer> timeListCombo = new JComboBox<Integer>(timeList);
+				centerPane.add(timeListCombo);
+				
+				
 				
 				ScreenVO[] listOfScreensInstalled = Slideshow.fetchListOfScreen();
 				final JComboBox<ScreenVO> screenList = new JComboBox<ScreenVO>(listOfScreensInstalled);
@@ -208,17 +220,18 @@ public class Home extends JPanel {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(),exec);
+						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(), (Integer)timeListCombo.getSelectedItem(), exec);
 						frame.dispose();
 					}
 				});
 				
 				
-				panel.add(upperPane, BorderLayout.PAGE_START);
+				panel.add(upperPane, BorderLayout.LINE_START);
+				panel.add(centerPane, BorderLayout.LINE_START);
 				panel.add(lowerPane, BorderLayout.CENTER);
 				
 				frame.getContentPane().add(panel);
-				frame.setSize(320, 100);
+				frame.setSize(320, 150);
 				frame.setResizable(false);
 				frame.setAlwaysOnTop(true);
 				frame.setVisible(true);

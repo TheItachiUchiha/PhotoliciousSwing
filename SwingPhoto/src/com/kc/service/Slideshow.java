@@ -36,13 +36,15 @@ public class Slideshow
 	JPanel panel;
 	ExecutorService executorService;
 	JLabel label;
+	Integer time;
 
-	public Slideshow(File outputFolder, ScreenVO screenVO, ExecutorService executorService) {
+	public Slideshow(File outputFolder, ScreenVO screenVO, Integer time, ExecutorService executorService) {
 		this.outputFolder = outputFolder;
 		this.screenVO = screenVO;
 		this.helper = new ImageHelper();
 		this.listOfImagesParsed = new ArrayList<String>();
 		this.executorService = executorService;
+		this.time = time;
 		start(outputFolder, screenVO, executorService);
 	}
 
@@ -85,7 +87,7 @@ public class Slideshow
 			panel.add(label);
 			screenVO.getScreen().setFullScreenWindow(frame);
 			frame.setVisible(true);
-			Timer timer = new Timer(5000, startCycle());
+			Timer timer = new Timer(time*1000, startCycle());
 	        timer.setRepeats(true);
 	        timer.start();
 			
@@ -106,7 +108,7 @@ public class Slideshow
             @Override
             public void actionPerformed(ActionEvent e) {
             	//Need to close this thread when ESC is pressed
-            	executorService.execute(new MyTask());
+            	executorService.execute(new MyTask(screenVO));
             }
         };
     }
@@ -144,6 +146,11 @@ public class Slideshow
 	
 	public class MyTask extends SwingWorker<ImageIcon, Object>
 	{
+		ScreenVO screenVO;
+		public MyTask(ScreenVO screenVO)
+		{
+			this.screenVO = screenVO;
+		}
 			@Override
 			protected ImageIcon doInBackground() throws Exception {
 				return loadImages();
@@ -179,7 +186,7 @@ public class Slideshow
 						}
 						if(!listOfImagesParsed.contains(file.getName()))
 						{
-							icon= helper.createFullScreenImage(file);
+							icon= helper.createFullScreenImage(file, this.screenVO);
 							listOfImagesParsed.add(file.getName());
 							break;
 						}
