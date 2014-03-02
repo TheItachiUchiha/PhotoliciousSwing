@@ -29,6 +29,7 @@ public class Settings extends JPanel {
 	private JTextField fieldWatermark;
 	private Validation validation;
 	static Home home;
+	static PrintSettings printSettings;
 
 	public Settings(final MainWindow mainWindow, final ExecutorService exec,
 			final JTabbedPane jTabbedPane) {
@@ -158,6 +159,9 @@ public class Settings extends JPanel {
 					jTabbedPane.remove(0);
 					home = new Home(mainWindow, exec);
 					jTabbedPane.addTab("Home", null, home, null);
+					
+					printSettings = new PrintSettings();
+					jTabbedPane.addTab("Print Settings", null, printSettings, null);
 				}
 			}
 		});
