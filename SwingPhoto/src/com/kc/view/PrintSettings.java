@@ -1,5 +1,6 @@
 package com.kc.view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -41,6 +42,15 @@ public class PrintSettings extends JPanel {
 				0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gbl_panel);
 		
+		final JLabel message = new JLabel("");
+		message.setForeground(Color.GREEN);
+		GridBagConstraints gbc_message = new GridBagConstraints();
+		gbc_message.gridwidth = 4;
+		gbc_message.insets = new Insets(0, 0, 5, 5);
+		gbc_message.gridx = 9;
+		gbc_message.gridy = 6;
+		add(message, gbc_message);
+		
 		JButton save = new JButton("Save");
 		GridBagConstraints gbc_save = new GridBagConstraints();
 		gbc_save.gridwidth = 4;
@@ -80,6 +90,15 @@ public class PrintSettings extends JPanel {
 		gbc_lblSelectOutputDirectory.gridx = 8;
 		gbc_lblSelectOutputDirectory.gridy = 4;
 		add(lblSelectOutputDirectory, gbc_lblSelectOutputDirectory);
+		
+		save.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent) {
+
+				message.setText(CommonConstants.SUCCESS);
+			}
+		});
 	}
 
 }

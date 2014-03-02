@@ -19,4 +19,6 @@ public class CommonConstants
 	public static final String NO_INPUT_FOLDER = "No Input Folder Selected";
 	
 	public static final String NO_WATERMARK = "No Watermark Selected";
+	
+	public static final String SUCCESS = "Configuration Saved";
 }
