@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import com.kc.utils.CommonConstants;
@@ -32,12 +33,17 @@ public class MainWindow extends JFrame
     });
 	/**
 	 * Launch the application.
+	 * @throws UnsupportedLookAndFeelException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		
-		SplashScreen splash = new SplashScreen(2000);
-		splash.showSplash();
-		String appId = "Photolicious-App";
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// set the name of the application menu item
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Thepica Live studio");
+		String appId = "Thepica Live studio-App";
     	PhotoliciousUtils.saveOutputFolder(CommonConstants.DEFAULT_OUTPUT_FOLDER);
     	boolean running;
     	try {
@@ -50,11 +56,14 @@ public class MainWindow extends JFrame
 		}
     	if(running)
     	{
+    		SplashScreen splash = new SplashScreen(2000);
+    		splash.showSplash();
     		EventQueue.invokeLater(new Runnable() {
     			public void run() {
     				try {
-    					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    					
     					MainWindow frame = new MainWindow();
+    					frame.setTitle("Thepica Live studio");
     					frame.setExtendedState(frame.getExtendedState()|JFrame.MAXIMIZED_BOTH);
     					frame.setVisible(true);
     					frame.setResizable(true);

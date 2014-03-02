@@ -37,6 +37,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import com.kc.model.PhotoBox;
+import com.kc.model.PrintServiceVO;
 import com.kc.model.ScreenVO;
 import com.kc.service.PrintImage;
 import com.kc.service.Slideshow;
@@ -69,6 +70,7 @@ public class Home extends JPanel {
 	ExecutorService exec = null;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+	String sizes[] = {"3r","4r","5r"};
 	
 	public Home(final MainWindow stage, final ExecutorService exec) {
 		
@@ -255,11 +257,57 @@ public class Home extends JPanel {
 
 				if(imageBox.getComponents().length!=0)
 				{
-					PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription());
-					exec.submit(image);
+					final JFrame frame= new JFrame("Start Slideshow");
+					JPanel panel = new JPanel();
+					BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+					panel.setLayout(layout);
+					
+					JPanel upperPane = new JPanel();
+					JPanel centerPane = new JPanel();
+					JPanel lowerPane = new JPanel();
+					FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
+					upperPane.setLayout(flowLayout);
+					lowerPane.setLayout(flowLayout);
+					centerPane.setLayout(flowLayout);
+					
+					
+					JLabel selectPrinter = new JLabel("Printer");
+					upperPane.add(selectPrinter);
+					/*final JComboBox<PrintServiceVO> print = new JComboBox<PrintServiceVO>(printImage.printerList());
+					upperPane.add(print);*/
+					JLabel selectSize = new JLabel("Size");
+					centerPane.add(selectSize);
+					final JComboBox<String> size = new JComboBox<String>(sizes);
+					centerPane.add(size);
+					
+					JButton button = new JButton("Print !");
+					lowerPane.add(button);
+					button.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription(),size.getSelectedItem().toString());
+							exec.submit(image);
+							frame.dispose();
+						}
+					});
+					
+					//panel.add(upperPane, BorderLayout.LINE_START);
+					panel.add(centerPane, BorderLayout.LINE_START);
+					panel.add(lowerPane, BorderLayout.CENTER);
+					
+					frame.getContentPane().add(panel);
+					frame.setSize(320, 150);
+					frame.setResizable(false);
+					frame.setAlwaysOnTop(true);
+					frame.setVisible(true);
+					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+					frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+					frame.show();
+					
 				}
 				else
-				{
+				{			
 					JOptionPane.showMessageDialog(Settings.home, "Please Select An Image !");
 				}
 			}

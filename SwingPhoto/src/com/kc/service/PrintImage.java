@@ -1,104 +1,72 @@
 package com.kc.service;
 
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MediaTracker;
+import java.awt.print.Book;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
 import javax.print.PrintService;
-import javax.print.SimpleDoc;
-import javax.print.attribute.DocAttributeSet;
-import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.OrientationRequested;
-import javax.print.event.PrintJobAdapter;
-import javax.print.event.PrintJobEvent;
-import javax.print.event.PrintJobListener;
-import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import com.kc.model.PrintServiceVO;
-import com.kc.view.MainWindow;
 
 public class PrintImage extends SwingWorker<Integer, String> {
 	
 	String file=null;
+	String size=null;
 	
 	public PrintImage()
 	{
 		
 	}
 	
-	public PrintImage(String file)
+	public PrintImage(String file, String size)
 	{
 		this.file=file;
+		this.size=size;
 	}
 
 
-	public void print(String file, PrintService printService, final MainWindow stage)
-			throws FileNotFoundException, InterruptedException, PrintException {
-		String filename = file;
-		DocFlavor flavor = DocFlavor.INPUT_STREAM.GIF;
-		DocPrintJob job = printService.createPrintJob();
-		PrintJobListener listener = new PrintJobAdapter() {
-			public void printDataTransferCompleted(PrintJobEvent e) {
-				stage.setVisible(false); 
-				stage.dispose();
-			}
-		};
-		job.addPrintJobListener(listener);
-		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-		FileInputStream fis = new FileInputStream(filename);
-		DocAttributeSet das = new HashDocAttributeSet();
-		Doc doc = new SimpleDoc(fis, flavor, das);
-		job.print(doc, pras);
-		Thread.sleep(3000);
-	}
+	
 
-	public List<PrintServiceVO> printerList() {
-		List<PrintServiceVO> observableList = new ArrayList();
+	public PrintServiceVO[] printerList() {
+		List<PrintServiceVO> observableList = new ArrayList<PrintServiceVO>();
 		PrintService printService[] = PrinterJob.lookupPrintServices();
 		for (PrintService printService2 : printService) {
 			PrintServiceVO printServiceVO = new PrintServiceVO();
 			printServiceVO.setPrintService(printService2);
 			observableList.add(printServiceVO);
 		}
-		return observableList;
+		return (PrintServiceVO[]) observableList.toArray();
 	}
 	
-	public static void printImage(String file) {
-	    //new Painter();
-
-	    MediaTracker tracker = new MediaTracker(new JPanel());
+	public static void printImage(String file, String size) {
 
 	    try {
 	        Image img = ImageIO.read(new File(file));
-	        tracker.addImage(img, 1);
-	        tracker.waitForAll();
-	        print(img);
+	        
+	        print(img, size);
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
 	    }
 	}
 
-	private static void print(final Image img) {
+	private static void print(final Image img, String size) {
 	    PrinterJob printjob = PrinterJob.getPrinterJob();
 	    printjob.setJobName("Print");
 
@@ -106,8 +74,8 @@ public class PrintImage extends SwingWorker<Integer, String> {
 
 	    try {
 	        System.out.println("Printing.");
-	        printable.printPage();
-	    } catch (PrinterException ex) {
+	        printable.printPage(size);
+	    } catch (Exception ex) {
 	        System.out.println("NO PAGE FOUND." + ex);
 	    }										
 	}
@@ -122,126 +90,136 @@ public class PrintImage extends SwingWorker<Integer, String> {
 	    }
 
 	    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
-	        if (pageIndex != 0) {
-	            return Printable.NO_SUCH_PAGE;
-	        }
+            if (pageIndex >= 1) {
+                return Printable.NO_SUCH_PAGE;
+            }
 
-	        //BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),
-	        //img.getHeight(null), BufferedImage.TYPE_INT_RGB);
-	        //bufferedImage.getGraphics().drawImage(img, 0, 0, null);
+            Graphics2D g2d = (Graphics2D) graphics;
+            // Be careful of clips...
+//            g2d.setClip(0, 0, (int) pageFormat.getWidth(), (int) pageFormat.getHeight());
+            g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
 
-	        Graphics2D g2 = (Graphics2D) graphics;
-	        g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-	        g2.drawImage(img, 0, 0, img.getWidth(null), img.getHeight(null), null);
-	        return Printable.PAGE_EXISTS;
-	    	
-	    	
-	    	
-	    	/*if (pageIndex != 0) {
-	            return Printable.NO_SUCH_PAGE;
-	        }
-	        
+            double width = pageFormat.getImageableWidth();
+            double height = pageFormat.getImageableHeight();
+
+            System.out.println("width = " + width);
+            System.out.println("height = " + height);
 
 
-	        Graphics2D graphics2D = (Graphics2D) graphics;
+            g2d.setColor(Color.BLACK);
+            //g2d.draw(new Rectangle2D.Double(0, 0, width, height));
+            g2d.drawImage(img, 0, 0, (int)width, (int)height,   null);
 
-	        int width = (int)Math.round(pageFormat.getImageableWidth());
-	        int height = (int)Math.round(pageFormat.getImageableHeight());
+            return Printable.PAGE_EXISTS;
+        }
 
-	        if (currentPage != pageIndex || img == null) {
-	            currentPage = pageIndex;    
-
+	    public void printPage(String size)
+	    {
+	    	double width = 0.0;
+            double height = 0.0;
+            double margin = 0.0;
+            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+	    	try{
+		    PrinterJob pj = PrinterJob.getPrinterJob();
+	        if (pj.printDialog()) {
+	            PageFormat pf = pj.defaultPage();
+	            Paper paper = pf.getPaper();
+	            if(size.equals("3r"))
+	            {
+	            	width = 5d * 72d;
+		            height = 3.5d * 72d;
+		            margin = 0d * 72d;
+		            aset.add(MediaSizeName.JIS_B7);
+	            }
+	            else if(size.equals("4r"))
+	            {
+	            	width = 6d * 72d;
+		            height = 4d * 72d;
+		            margin = 0d * 72d;
+		            aset.add(MediaSizeName.JAPANESE_POSTCARD);
+	            }
+	            else if(size.equals("5r"))
+	            {
+	            	width = 7d * 72d;
+		            height = 5d * 72d;
+		            margin = 0d * 72d;
+		            aset.add(MediaSizeName.NA_5X7);
+	            }
+	            else if(size.equals("6r"))
+	            {
+	            	width = 8d * 72d;
+		            height = 6d * 72d;
+		            margin = 0d * 72d;
+		            aset.add(MediaSizeName.JAPANESE_DOUBLE_POSTCARD);
+	            }
+	            else if(size.equals("8r"))
+	            {
+	            	width = 10d * 72d;
+		            height = 8d * 72d;
+		            margin = 0d * 72d;
+		            aset.add(MediaSizeName.NA_8X10);
+	            }
+	            paper.setSize(width, height);
+	            paper.setImageableArea(
+	                    margin,
+	                    margin,
+	                    width - (margin * 2),
+	                    height - (margin * 2));
+	            System.out.println("Before- " + dump(paper));
+	            pf.setOrientation(PageFormat.LANDSCAPE);
+	            pf.setPaper(paper);
+	            System.out.println("After- " + dump(paper));
+	            System.out.println("After- " + dump(pf));
+	            dump(pf);
+	            PageFormat validatePage = pj.validatePage(pf);
+	            System.out.println("Valid- " + dump(validatePage));
+	
+	            Book pBook = new Book();
+	            pBook.append(this, pf);
+	            pj.setPageable(pBook);
 	            
-
-	            BufferedImage imageCopy = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	            Graphics2D g2d = imageCopy.createGraphics();
-	            g2d.drawImage(imageCopy, 0, 0, null);
-	            g2d.dispose();
-
-	            double scaleFactor = getScaleFactorToFit(new Dimension(imageCopy.getWidth(), imageCopy.getHeight()), new Dimension(width, height));
-
-	            int imageWidth = (int)Math.round(imageCopy.getWidth() * scaleFactor);
-	            int imageHeight = (int)Math.round(imageCopy.getHeight() * scaleFactor);
-
-	            double x = ((pageFormat.getImageableWidth() - imageWidth) / 2) + pageFormat.getImageableX();
-	            double y = ((pageFormat.getImageableHeight() - imageHeight) / 2) + pageFormat.getImageableY();
-
-	            img = imageCopy.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
-
-	        }
-
-	        graphics2D.drawRenderedImage(img, AffineTransform.getTranslateInstance(x, y));
-
-	        return PAGE_EXISTS;*/
-	    }
-
-	    public void printPage() throws PrinterException {
-	        try{
-	    	PrinterJob job = PrinterJob.getPrinterJob();
-	    	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-	    	aset.add(OrientationRequested.REVERSE_LANDSCAPE);
-	    	aset.add(MediaSizeName.JAPANESE_POSTCARD);
-	        //PageFormat pf = job.pageDialog(aset);
-	        //job.setPrintable(new PrintDialogExample(), pf);
-	    	job.setJobName("TEST JOB");
-            PageFormat pf = job.pageDialog(aset);
-            job.setPrintable(this, pf);
-	        boolean ok = job.printDialog(aset);
-	        if (ok) {
+	           
+	            aset.add(OrientationRequested.LANDSCAPE);
 	            
-	            job.print(aset);
+	            try {
+	                pj.setPrintable(this);
+	                pj.print(aset);
+	            } catch (PrinterException ex) {
+	                ex.printStackTrace();
+	            }
 	        }
-	        }
-	        catch(Exception e)
-	        {
-	        	e.printStackTrace();
-	        }
+	
+	    } catch (Exception exp) {
+	        exp.printStackTrace();
 	    }
-	    
-	    /*public double getScaleFactor(int iMasterSize, int iTargetSize) {
-	        double dScale = 1;
-	        if (iMasterSize > iTargetSize) {
-	            dScale = (double) iTargetSize / (double) iMasterSize;
-	        } else {
-	            dScale = (double) iTargetSize / (double) iMasterSize;
-	        }
-	        return dScale;
-	    }
+    }
 
-	    public double getScaleFactorToFit(BufferedImage img, Dimension size) {
-	        double dScale = 1;
-	        if (img != null) {
-	            int imageWidth = img.getWidth();
-	            int imageHeight = img.getHeight();
-	            dScale = getScaleFactorToFit(new Dimension(imageWidth, imageHeight), size);
-	        }
-	        return dScale;
-	    }
+	protected static String dump(Paper paper) {
+	    StringBuilder sb = new StringBuilder(64);
+	    sb.append(paper.getWidth()).append("x").append(paper.getHeight())
+	            .append("/").append(paper.getImageableX()).append("x").
+	            append(paper.getImageableY()).append(" - ").append(paper
+	            .getImageableWidth()).append("x").append(paper.getImageableHeight());
+	    return sb.toString();
+	}
 
-	    public double getScaleFactorToFit(Dimension original, Dimension toFit) {
-	        double dScale = 1d;
-	        if (original != null && toFit != null) {
-	            double dScaleWidth = getScaleFactor(original.width, toFit.width);
-	            double dScaleHeight = getScaleFactor(original.height, toFit.height);
+	protected static String dump(PageFormat pf) {
+	    Paper paper = pf.getPaper();
+	    return dump(paper);
+	}
 
-	            dScale = Math.min(dScaleHeight, dScaleWidth);
-	        }
-	        return dScale;
-	    }*/
 	}
 	
 	public static void main(String args[])
 	{
-		PrintImage.printImage("C:\\Users\\Abhinay_Kryptcoder\\Desktop\\Untitled.jpg");
-		
-		
+		PrintImage.printImage("C:\\Users\\Abhinay_Kryptcoder\\Desktop\\Untitled.jpg", "4r");
 	}
 
 	
 	@Override
 	protected Integer doInBackground() throws Exception {
 		// TODO Auto-generated method stub
-		printImage(this.file);
+		printImage(this.file, this.size);
 		return null;
 	}
 
