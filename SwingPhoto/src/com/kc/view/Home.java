@@ -83,11 +83,11 @@ public class Home extends JPanel {
 		splitPane.setEnabled(false);
 		setLayout(new BorderLayout(0, 0));
 		add(splitPane, BorderLayout.CENTER);
-		splitPane.setLeftComponent(leftPane());
+		splitPane.setLeftComponent(leftPane(stage));
 		splitPane.setRightComponent(viewGallery(stage));
 	}
 	
-	public JPanel leftPane()
+	public JPanel leftPane(final MainWindow stage)
 	{
 		JPanel leftPane = new JPanel();
 		
@@ -229,7 +229,7 @@ public class Home extends JPanel {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(), (Integer)timeListCombo.getSelectedItem(), exec);
+						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(), (Integer)timeListCombo.getSelectedItem(), exec, stage);
 						frame.dispose();
 					}
 				});

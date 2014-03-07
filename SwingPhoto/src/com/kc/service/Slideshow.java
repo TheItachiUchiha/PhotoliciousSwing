@@ -38,20 +38,20 @@ public class Slideshow
 	JLabel label;
 	Integer time;
 
-	public Slideshow(File outputFolder, ScreenVO screenVO, Integer time, ExecutorService executorService) {
+	public Slideshow(File outputFolder, ScreenVO screenVO, Integer time, ExecutorService executorService, JFrame primaryFrame) {
 		this.outputFolder = outputFolder;
 		this.screenVO = screenVO;
 		this.helper = new ImageHelper();
 		this.listOfImagesParsed = new ArrayList<String>();
 		this.executorService = executorService;
 		this.time = time;
-		start(outputFolder, screenVO, executorService);
+		start(outputFolder, screenVO, executorService, primaryFrame);
 	}
 
 	
 		
 		
-	public void start(final File outputFolder, ScreenVO screenVO, ExecutorService executorService) {
+	public void start(final File outputFolder, ScreenVO screenVO, ExecutorService executorService, JFrame primaryFrame) {
 		try {
 
 			this.frame = new JFrame();
@@ -59,6 +59,39 @@ public class Slideshow
 			frame.add(panel);
 			frame.setSize(new Dimension(200, 200));
 			frame.setUndecorated(true);
+			
+			/**
+			 * For listening to ESCAPE KEY when the Slideshow 
+			 * is running on any other screen other than Primary Screen
+			 */
+			primaryFrame.addKeyListener(new KeyListener() {
+				
+				@Override
+				public void keyTyped(java.awt.event.KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyReleased(java.awt.event.KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyPressed(java.awt.event.KeyEvent e) {
+					if (e.getKeyCode() == e.VK_ESCAPE) {
+		                frame.dispose();
+		                Thread.interrupted();
+		            }
+					
+				}
+			});
+			
+			/**
+			 * For listening to ESCAPE KEY when the Slideshow 
+			 * is running on Primary Screen
+			 */
 			frame.addKeyListener(new KeyListener() {
 				
 				@Override
