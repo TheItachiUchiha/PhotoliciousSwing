@@ -44,8 +44,9 @@ public class Settings extends JPanel {
 				0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gbl_panel);
 		
-		JLabel lblSelectInputDirectory = new JLabel("Select Input Directory");
+		JLabel lblSelectInputDirectory = new JLabel("Select Input Directory  ");
 		GridBagConstraints gbc_lblSelectInputDirectory = new GridBagConstraints();
+		gbc_lblSelectInputDirectory.anchor = GridBagConstraints.EAST;
 		gbc_lblSelectInputDirectory.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSelectInputDirectory.gridx = 8;
 		gbc_lblSelectInputDirectory.gridy = 3;
@@ -71,6 +72,7 @@ public class Settings extends JPanel {
 		
 		JLabel lblSelectOutputDirectory = new JLabel("Select Output Directory");
 		GridBagConstraints gbc_lblSelectOutputDirectory = new GridBagConstraints();
+		gbc_lblSelectOutputDirectory.anchor = GridBagConstraints.EAST;
 		gbc_lblSelectOutputDirectory.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSelectOutputDirectory.gridx = 8;
 		gbc_lblSelectOutputDirectory.gridy = 4;
@@ -94,8 +96,9 @@ public class Settings extends JPanel {
 		gbc_outputFolder.gridy = 4;
 		add(outputFolder, gbc_outputFolder);
 		
-		JLabel lblSelectWatermark = new JLabel("Select Watermark");
+		JLabel lblSelectWatermark = new JLabel("Select Watermark         ");
 		GridBagConstraints gbc_lblSelectWatermark = new GridBagConstraints();
+		gbc_lblSelectWatermark.anchor = GridBagConstraints.EAST;
 		gbc_lblSelectWatermark.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSelectWatermark.gridx = 8;
 		gbc_lblSelectWatermark.gridy = 5;
@@ -161,7 +164,7 @@ public class Settings extends JPanel {
 					jTabbedPane.addTab("Home", null, home, null);
 					
 					printSettings = new PrintSettings();
-					jTabbedPane.addTab("Print Settings", null, printSettings, null);
+					jTabbedPane.addTab("Configuration", null, printSettings, null);
 				}
 			}
 		});
