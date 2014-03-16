@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
+import com.kc.model.PrintServiceVO;
 import com.kc.model.ScreenVO;
 import com.kc.utils.ImageHelper;
 import com.kc.utils.PhotoliciousUtils;
@@ -150,7 +151,7 @@ public class Slideshow
 	
 
 	public static ScreenVO[] fetchListOfScreen() {
-		ScreenVO[] listOfScreenVO = new ScreenVO[10];
+		List<ScreenVO> listOfScreenVO = new ArrayList<ScreenVO>();
 		try {
 			GraphicsDevice[] listOfScreen;
 			GraphicsEnvironment ge = GraphicsEnvironment
@@ -168,12 +169,13 @@ public class Slideshow
 							+ listOfScreen[i].getDisplayMode().getHeight());
 				}
 				screenVO.setScreen(listOfScreen[i]);
-				listOfScreenVO[i] = screenVO;
+				listOfScreenVO.add(screenVO);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return listOfScreenVO;
+		ScreenVO[] array = listOfScreenVO.toArray(new ScreenVO[listOfScreenVO.size()]);
+		return array;
 	}
 
 	

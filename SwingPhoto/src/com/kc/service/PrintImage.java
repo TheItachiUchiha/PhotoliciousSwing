@@ -29,16 +29,18 @@ public class PrintImage extends SwingWorker<Integer, String> {
 	
 	String file=null;
 	String size=null;
+	String printer=null;
 	
 	public PrintImage()
 	{
 		
 	}
 	
-	public PrintImage(String file, String size)
+	public PrintImage(String file, String size, String printer)
 	{
-		this.file=file;
+		file=file;
 		this.size=size;
+		this.printer = printer;
 	}
 
 
@@ -47,15 +49,16 @@ public class PrintImage extends SwingWorker<Integer, String> {
 	public PrintServiceVO[] printerList() {
 		List<PrintServiceVO> observableList = new ArrayList<PrintServiceVO>();
 		PrintService printService[] = PrinterJob.lookupPrintServices();
-		for (PrintService printService2 : printService) {
+		for (int i=0; i< printService.length; i++) {
 			PrintServiceVO printServiceVO = new PrintServiceVO();
-			printServiceVO.setPrintService(printService2);
+			printServiceVO.setPrintService(printService[i]);
 			observableList.add(printServiceVO);
 		}
-		return (PrintServiceVO[]) observableList.toArray();
+		PrintServiceVO[] array = observableList.toArray(new PrintServiceVO[observableList.size()]);
+		return array;
 	}
 	
-	public static void printImage(String file, String size) {
+	public static void printImage(String file, String size, String printer) {
 
 	    try {
 	        Image img = ImageIO.read(new File(file));
@@ -212,14 +215,14 @@ public class PrintImage extends SwingWorker<Integer, String> {
 	
 	public static void main(String args[])
 	{
-		PrintImage.printImage("C:\\Users\\Abhinay_Kryptcoder\\Desktop\\Untitled.jpg", "4r");
+		PrintImage.printImage("C:\\Users\\Abhinay_Kryptcoder\\Desktop\\Untitled.jpg", "4r", null);
 	}
 
 	
 	@Override
 	protected Integer doInBackground() throws Exception {
 		// TODO Auto-generated method stub
-		printImage(this.file, this.size);
+		printImage(this.file, this.size, this.printer);
 		return null;
 	}
 

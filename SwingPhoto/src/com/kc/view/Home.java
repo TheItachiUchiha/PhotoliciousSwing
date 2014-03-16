@@ -188,112 +188,91 @@ public class Home extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final JFrame frame= new JFrame("Start Slideshow");
-				JPanel panel = new JPanel();
-				BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
-				panel.setLayout(layout);
-			
-				
-				
-				JPanel upperPane = new JPanel();
-				JPanel centerPane = new JPanel();
-				JPanel lowerPane = new JPanel();
-				FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
-				upperPane.setLayout(flowLayout);
-				lowerPane.setLayout(flowLayout);
-				centerPane.setLayout(flowLayout);
-				
-				JLabel selectScreen = new JLabel("Screen");
-				upperPane.add(selectScreen);
-				
-				JLabel selectTime = new JLabel("Time (in sec)");
-				centerPane.add(selectTime);
-				
-				Integer[] timeList = new Integer[2];
-				timeList[0] = 3;
-				timeList[1] = 5;
-				final JComboBox<Integer> timeListCombo = new JComboBox<Integer>(timeList);
-				centerPane.add(timeListCombo);
-				
-				
-				
-				ScreenVO[] listOfScreensInstalled = Slideshow.fetchListOfScreen();
-				final JComboBox<ScreenVO> screenList = new JComboBox<ScreenVO>(listOfScreensInstalled);
-				
-				upperPane.add(screenList);
-				
-				JButton button = new JButton("Start !");
-				lowerPane.add(button);
-				
-				button.addActionListener(new ActionListener() {
+				if(PhotoliciousUtils.readSlideTime().equals("")||
+						PhotoliciousUtils.readSlideTime()==null)
+				{
+					/*final JFrame frame= new JFrame("Slideshow");
+					frame.setSize(300, 100);
+					JPanel panel = new JPanel();
+					BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+					panel.setLayout(layout);
+					JPanel upperPane = new JPanel();
+					JPanel lowerPane = new JPanel();
+					JLabel selectScreen = new JLabel("Please Set the Slideshow Time in Settings !");
+					upperPane.add(selectScreen);
+					JButton button = new JButton("OK");
+					lowerPane.add(button);
 					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(), (Integer)timeListCombo.getSelectedItem(), exec, stage);
-						frame.dispose();
-					}
-				});
-				
-				
-				panel.add(upperPane, BorderLayout.LINE_START);
-				panel.add(centerPane, BorderLayout.LINE_START);
-				panel.add(lowerPane, BorderLayout.CENTER);
-				
-				frame.getContentPane().add(panel);
-				frame.setSize(320, 150);
-				frame.setResizable(false);
-				frame.setAlwaysOnTop(true);
-				frame.setVisible(true);
-				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
-				frame.show();
-			}
-		});
-		
-		printButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				if(imageBox.getComponents().length!=0)
+					button.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							frame.dispose();
+						}
+					});
+					panel.add(upperPane, BorderLayout.LINE_START);
+					panel.add(lowerPane, BorderLayout.CENTER);
+					frame.add(panel);
+					frame.setResizable(false);
+					frame.setAlwaysOnTop(true);
+					frame.setVisible(true);
+					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+					frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+					frame.show();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+					JOptionPane.showMessageDialog(Settings.home, "Please Set the Slideshow Time in Settings !");
+				}
+				else
 				{
 					final JFrame frame= new JFrame("Start Slideshow");
 					JPanel panel = new JPanel();
 					BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
 					panel.setLayout(layout);
+				
+					
 					
 					JPanel upperPane = new JPanel();
-					JPanel centerPane = new JPanel();
+					/*JPanel centerPane = new JPanel();*/
 					JPanel lowerPane = new JPanel();
-					FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
+					/*FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
 					upperPane.setLayout(flowLayout);
 					lowerPane.setLayout(flowLayout);
-					centerPane.setLayout(flowLayout);
+					centerPane.setLayout(flowLayout);*/
+					
+					JLabel selectScreen = new JLabel("Screen");
+					upperPane.add(selectScreen);
+					
+					/*JLabel selectTime = new JLabel("Time (in sec)");
+					centerPane.add(selectTime);*/
+					
+					/*Integer[] timeList = new Integer[2];
+					timeList[0] = 3;
+					timeList[1] = 5;
+					final JComboBox<Integer> timeListCombo = new JComboBox<Integer>(timeList);
+					centerPane.add(timeListCombo);*/
 					
 					
-					JLabel selectPrinter = new JLabel("Printer");
-					upperPane.add(selectPrinter);
-					/*final JComboBox<PrintServiceVO> print = new JComboBox<PrintServiceVO>(printImage.printerList());
-					upperPane.add(print);*/
-					JLabel selectSize = new JLabel("Size");
-					centerPane.add(selectSize);
-					final JComboBox<String> size = new JComboBox<String>(sizes);
-					centerPane.add(size);
 					
-					JButton button = new JButton("Print !");
+					ScreenVO[] listOfScreensInstalled = Slideshow.fetchListOfScreen();
+					final JComboBox<ScreenVO> screenList = new JComboBox<ScreenVO>(listOfScreensInstalled);
+					
+					upperPane.add(screenList);
+					
+					JButton button = new JButton("Start !");
 					lowerPane.add(button);
+					
 					button.addActionListener(new ActionListener() {
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription(),size.getSelectedItem().toString());
-							exec.submit(image);
+							new Slideshow(outputFolder, (ScreenVO)screenList.getSelectedItem(), Integer.parseInt(PhotoliciousUtils.readSlideTime()), exec, stage);
 							frame.dispose();
 						}
 					});
 					
-					//panel.add(upperPane, BorderLayout.LINE_START);
-					panel.add(centerPane, BorderLayout.LINE_START);
+					
+					panel.add(upperPane, BorderLayout.LINE_START);
+					//panel.add(centerPane, BorderLayout.LINE_START);
 					panel.add(lowerPane, BorderLayout.CENTER);
 					
 					frame.getContentPane().add(panel);
@@ -304,11 +283,79 @@ public class Home extends JPanel {
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
 					frame.show();
-					
 				}
-				else
-				{			
-					JOptionPane.showMessageDialog(Settings.home, "Please Select An Image !");
+			}
+		});
+		
+		printButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if(!(null==PhotoliciousUtils.readDefaultPrinter()||"".equals(PhotoliciousUtils.readDefaultPrinter())||
+						null==PhotoliciousUtils.readPrintSize()||"".equals(PhotoliciousUtils.readPrintSize())))
+				{
+					if(imageBox.getComponents().length!=0)
+					{
+						/*final JFrame frame= new JFrame("Print");
+						JPanel panel = new JPanel();
+						BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+						panel.setLayout(layout);
+						
+						JPanel upperPane = new JPanel();
+						JPanel centerPane = new JPanel();
+						JPanel lowerPane = new JPanel();
+						FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
+						upperPane.setLayout(flowLayout);
+						lowerPane.setLayout(flowLayout);
+						centerPane.setLayout(flowLayout);
+						
+						
+						JLabel selectPrinter = new JLabel("Printer");
+						upperPane.add(selectPrinter);
+						final JComboBox<PrintServiceVO> print = new JComboBox<PrintServiceVO>(printImage.printerList());
+						upperPane.add(print);
+						JLabel selectSize = new JLabel("Size");
+						centerPane.add(selectSize);
+						final JComboBox<String> size = new JComboBox<String>(sizes);
+						centerPane.add(size);
+						
+						JButton button = new JButton("Print !");
+						lowerPane.add(button);
+						button.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription(),size.getSelectedItem().toString());
+								exec.submit(image);
+								frame.dispose();
+							}
+						});
+						
+						//panel.add(upperPane, BorderLayout.LINE_START);
+						panel.add(centerPane, BorderLayout.LINE_START);
+						panel.add(lowerPane, BorderLayout.CENTER);
+						
+						frame.getContentPane().add(panel);
+						frame.setSize(320, 150);
+						frame.setResizable(false);
+						frame.setAlwaysOnTop(true);
+						frame.setVisible(true);
+						Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+						frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+						frame.show();*/
+						PrintImage image = new PrintImage(((ImageIcon)((JLabel)imageBox.getComponent(0)).getIcon()).getDescription(),PhotoliciousUtils.readPrintSize(),
+								PhotoliciousUtils.readDefaultPrinter());
+						exec.submit(image);
+						
+					}
+					else
+					{			
+						JOptionPane.showMessageDialog(Settings.home, "Please Select An Image !");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(Settings.home, "Please Set the Print Settings Correctly !");
 				}
 			}
 		});

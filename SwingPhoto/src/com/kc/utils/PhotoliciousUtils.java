@@ -17,7 +17,7 @@ public class PhotoliciousUtils
 		        props.setProperty("defaultPrinter", defaultPrinter);
 		        props.setProperty("printSize", printSize);
 		        props.setProperty("slideTime", slideTime);
-		        File f = new File("../settings.properties");
+		        File f = new File("settings.properties");
 		        OutputStream out = new FileOutputStream( f );
 		        props.store(out, "Default Properties Saved");
 		    }
@@ -30,7 +30,7 @@ public class PhotoliciousUtils
 	{
 		String defaultPrinter = null;
 		try{
-			File f = new File("../settings.properties");
+			File f = new File("settings.properties");
 			InputStream in = new FileInputStream(f);
 			Properties p = new Properties();
 			p.load(in);
@@ -46,7 +46,7 @@ public class PhotoliciousUtils
 	{
 		String printSize = null;
 		try{
-			File f = new File("../settings.properties");
+			File f = new File("settings.properties");
 			InputStream in = new FileInputStream(f);
 			Properties p = new Properties();
 			p.load(in);
@@ -62,7 +62,7 @@ public class PhotoliciousUtils
 	{
 		String slideTime = null;
 		try{
-			File f = new File("../settings.properties");
+			File f = new File("settings.properties");
 			InputStream in = new FileInputStream(f);
 			Properties p = new Properties();
 			p.load(in);
