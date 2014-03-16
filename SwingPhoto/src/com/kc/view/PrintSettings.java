@@ -45,12 +45,12 @@ public class PrintSettings extends JPanel {
 			
 			GridBagLayout gbl_panel = new GridBagLayout();
 			gbl_panel.columnWidths = new int[] {230, 220, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 320};
-			gbl_panel.rowHeights = new int[] {30, 30, 30, 0, 0, 0, 0, 0, 0, 30, 30, 30, 30};
+			gbl_panel.rowHeights = new int[] {230, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 			gbl_panel.columnWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 0.0, 0.0,
 					0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
 					Double.MIN_VALUE };
-			gbl_panel.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-					0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+			gbl_panel.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+					0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 			setLayout(gbl_panel);
 			
 			JSeparator separator = new JSeparator();
