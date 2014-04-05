@@ -1,5 +1,6 @@
 package com.kc.service;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -57,6 +58,7 @@ public class Slideshow
 
 			this.frame = new JFrame();
 			this.panel = new JPanel();
+			this.panel.setBackground(Color.BLACK);
 			frame.add(panel);
 			frame.setSize(new Dimension(200, 200));
 			frame.setUndecorated(true);
@@ -197,6 +199,7 @@ public class Slideshow
 			{
 				try
 				{
+					label.setBackground(Color.BLACK);
 					label.setIcon(get());
 				}
 				catch (Exception e) {

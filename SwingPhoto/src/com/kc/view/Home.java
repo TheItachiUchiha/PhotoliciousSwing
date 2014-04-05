@@ -492,6 +492,7 @@ public class Home extends JPanel {
 													   JFrame frame= new JFrame(file.getName());
 										        	   JPanel panel = new JPanel();
 										        	   JLabel fullImage = new JLabel(helper.createFullScreenImage(file));
+										        	   fullImage.setBackground(Color.BLACK);
 										        	   panel.add(fullImage);
 										        	   frame.getContentPane().add(panel);
 										        	   frame.setVisible(true);
